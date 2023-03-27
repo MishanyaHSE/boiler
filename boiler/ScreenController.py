@@ -72,6 +72,12 @@ class ScreenController:
         #
         if self.button_manager.turn_on.was_pressed and self.check_if_can_start():
             self.started = True
+            self.button_manager.turn_on.add_frame = True
+            self.button_manager.turn_on.frame_color = 'green'
+        elif self.button_manager.turn_on.was_pressed and not self.check_if_can_start():
+            self.button_manager.turn_on.add_frame = True
+            self.button_manager.turn_on.frame_color = 'red'
+            self.button_manager.turn_on.was_pressed = False
         if self.button_manager.turn_off.was_pressed:
             self.started = False
             self.button_manager.turn_on.was_pressed = False

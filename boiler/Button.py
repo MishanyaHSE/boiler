@@ -18,6 +18,8 @@ class Button:
         self.was_pressed = False
         self.is_on = False
         self.is_off = False
+        self.add_frame = False
+        self.frame_color = ''
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -37,8 +39,8 @@ class Button:
         surface.blit(self.name_surface, (self.rect.x + self.rect.width // 2 - self.name_surface.get_rect().width // 2,
                                          self.rect.y + self.rect.height // 2 - self.name_surface.get_rect().height // 2))
         surface.blit(self.txt_surface, (self.rect.x + self.rect.width + 5, self.rect.y))
+        if self.add_frame:
+            pygame.draw.rect(surface, self.frame_color, self.rect, 2)
 
     def to_start_color(self):
         self.color = START_COLOR
-
-
