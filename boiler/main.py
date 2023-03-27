@@ -1,8 +1,8 @@
 import pygame as pg
 
-from constants import images
-from Lever import Lever
+import constants
 from ScreenController import ScreenController
+
 
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 225)
@@ -12,7 +12,11 @@ HEIGHT = 600
 pg.init()
 screen = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.update()
-scrn_cntrl = ScreenController(WIDTH, HEIGHT)
+screen_control = ScreenController(WIDTH, HEIGHT)
+pg.display.set_caption('')
+icon = pg.image.load(constants.images["fire_0"]).convert_alpha()
+pg.display.set_icon(icon)
+clock = pg.time.Clock()
 
 running = True
 doMove = False
@@ -21,14 +25,15 @@ while running:
     for i in pg.event.get():
         if i.type == pg.QUIT:
             running = False
-        if i.type == pg.MOUSEBUTTONDOWN:
-            pos = i.pos
-            print(pos)
-        for lever in scrn_cntrl.levers:
-            lever.handle_event(i)
-        for label in scrn_cntrl.boxes:
-            label.handle_event(i)
-        for button in scrn_cntrl.button_manager.button_bar:
-            button.handle_event(i)
-    scrn_cntrl.display(screen)
+        if screen_control.started:
+            for lever in screen_control.levers:
+                lever.handle_event(i)
+            for button in screen_control.button_manager.button_bar:
+                button.handle_event(i)
+        else:
+            screen_control.button_manager.turn_on.handle_event(i)
+            for label in screen_control.boxes:
+                label.handle_event(i)
+    screen_control.display(screen)
+    clock.tick(60)
     pg.display.update()

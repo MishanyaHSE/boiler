@@ -21,6 +21,7 @@ class InputBox:
         self.quantity_surface = self.f1.render(quantity, True, 'black')
         self.first_touch = True
         self.back_color = BACK_COLOR
+        self.num = float(text)
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -40,22 +41,40 @@ class InputBox:
                 self.back_color = BACK_COLOR
         if event.type == pygame.KEYDOWN:
             if self.active:
-                if event.key == pygame.K_RETURN:
-                    print(self.text)
-                    self.text = ''
-                elif event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
                 elif (event.unicode.isdigit() or event.unicode == ".") and len(self.text) < 5:
                     self.text += event.unicode
                 # Re-render the text.
                 self.txt_surface = self.f1.render(self.text, True, COLOR_TEXT)
+                if self.is_number():
+                    self.num = float(self.text)
 
     def display(self, surface):
         pygame.draw.rect(surface, 'grey', (self.rect.x + 2, self.rect.y + 2, self.rect.width, self.rect.height))
         pygame.draw.rect(surface, self.back_color, self.rect)
         surface.blit(self.name_surface, (self.rect.x + self.rect.width // 2 - self.name_rect.width // 2,
-                                        self.rect.y - 15))
+                                         self.rect.y - 15))
         surface.blit(self.quantity_surface, (self.rect.x + self.rect.width + 5, self.rect.y + 3))
         surface.blit(self.txt_surface, (self.rect.x + self.rect.width // 2 - self.txt_surface.get_rect().width // 2,
-                                       self.rect.y + self.rect.height // 2 - self.txt_surface.get_rect().height // 2))
+                                        self.rect.y + self.rect.height // 2 - self.txt_surface.get_rect().height // 2))
         pygame.draw.rect(surface, self.color, self.rect, 1)
+
+    def raise_value(self):
+        self.num += 0.01
+        self.text = str(self.num)
+        self.text = self.text[:4]
+        self.txt_surface = self.f1.render(self.text, True, COLOR_TEXT)
+
+    def decrease_value(self):
+        self.num -= 0.01
+        self.text = str(self.num)
+        self.text = self.text[:4]
+        self.txt_surface = self.f1.render(self.text, True, COLOR_TEXT)
+
+    def is_number(self):
+        try:
+            float(self.text)
+            return True
+        except ValueError:
+            return False

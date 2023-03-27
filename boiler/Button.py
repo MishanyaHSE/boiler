@@ -22,7 +22,8 @@ class Button:
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.is_on or self.is_off:
-                self.was_pressed = True
+                if self.rect.collidepoint(event.pos):
+                    self.was_pressed = True
             else:
                 if self.rect.collidepoint(event.pos):
                     if self.previous_clicked:
@@ -34,7 +35,10 @@ class Button:
     def display(self, surface):
         pygame.draw.rect(surface, self.color, self.rect)
         surface.blit(self.name_surface, (self.rect.x + self.rect.width // 2 - self.name_surface.get_rect().width // 2,
-                                       self.rect.y + self.rect.height // 2 - self.name_surface.get_rect().height // 2))
+                                         self.rect.y + self.rect.height // 2 - self.name_surface.get_rect().height // 2))
         surface.blit(self.txt_surface, (self.rect.x + self.rect.width + 5, self.rect.y))
+
+    def to_start_color(self):
+        self.color = START_COLOR
 
 

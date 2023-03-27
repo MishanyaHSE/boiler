@@ -19,7 +19,7 @@ class Fire:
         self.is_opened = False
 
     def display(self, surface):
-        div = 30
+        div = 5
         if self.was_closed:
             self.current_width = self.width
             self.current_height = self.height
