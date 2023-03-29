@@ -9,9 +9,9 @@ from InputBox import InputBox
 from ButtonManager import ButtonManager
 from TextLabel import TextLabel
 from Fire import Fire
-from Screw import  Screw
+from Screw import Screw
 
-BUBBLE_ANIMATION_DURATION = 50
+BUBBLE_ANIMATION_DURATION = 18
 
 
 
